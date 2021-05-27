@@ -28,7 +28,7 @@ elif len(argument) == 3:
     xml_dir = argument[1]
     txt_des = argument[2]
 
-index = {'HeavyVehicle':0,'MidsizeVehicle':1,'CompactVehicle':2,'Car':3,'NoneVehicle':4,'Pedestrian':5,'LargeBus':6,'LightBus':7}
+index = {'Object0':0,'Object1':1,'Object2':2,'Object3':3,'Object4':4,'Object5':5,'Object6':6,'Object7':7}
 
 class bbox():
     type = ''
@@ -65,17 +65,6 @@ def get(dir):
         result.append(b)
     return result
 
-# convert bmp to jpg (Not used)
-def bmptojpg(dir):
-    if not os.path.exists(dir + 'jpg/'):
-        os.makedirs(dir + 'jpg/')
-
-    filelists = os.listdir(dir)
-    for file in filelists:
-        img = cv2.imread(dir + file,-1)
-        cv2.imwrite(dir + 'jpg/' + file.split('.bmp')[0] + '.jpg',img)
-        print('已转换'+file+'为jpg') 
-
 # detect and create destination folder
 if not os.path.exists(txt_des):
     os.makedirs(txt_des)
@@ -90,6 +79,7 @@ for n_0 in filelists:
         tar_num = len(get(xml_dir + n_0))
         print(n_0 + ', 目标数量：' + str(tar_num))
        
+        # 防止有多余的其他字符或空格
         for k in range(tar_num):
             t = re.sub('[\W_]+', '', r[k].type)
             res += str(index[t]) + ' ' + str(r[k].mid_x) + ' ' + str(r[k].mid_y) + ' ' + str(r[k].dis_x) + ' ' + str(r[k].dis_y) + '\n'

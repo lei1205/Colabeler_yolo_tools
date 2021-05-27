@@ -5,7 +5,7 @@ import cv2
 argument = sys.argv[1:]
 print(len(argument))
 if len(argument) < 2 or len(argument) > 3:
-    print("Example: python YOLO2Colabeler.py ./pic ./outputs_yolo ./outputs_xml")
+    print("Example: python yolo2colabeler.py ./pic ./outputs_yolo ./outputs_xml")
     sys.exit(1)
 elif len(argument) == 2:
     if not argument[0].endswith('/'):
@@ -26,7 +26,7 @@ elif len(argument) == 3:
     txt_dir = argument[1]
     xml_des = argument[2]
 
-index = {0:"Heavy-Vehicle",1:"Midsize-Vehicle",2:"Compact-Vehicle",3:"Car",4:"None-Vehicle",5:"Pedestrian",6:"Large-Bus",7:"Light-Bus"}
+index = {0:"object0",1:"object1",2:"object2",3:"object3",4:"object4",5:"object5",6:"object6",7:"object7"}
 class obj():
     type = ""
     xmin = 0

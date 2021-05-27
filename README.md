@@ -23,7 +23,7 @@
   ```
 
 ## To change object type...
-* edit index in both colabeler2yolo.py and yolo2colabeler.py
+* Edit index in both colabeler2yolo.py and yolo2colabeler.py
 
   ```python
   # colabeler2yolo.py

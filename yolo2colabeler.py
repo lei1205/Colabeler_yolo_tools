@@ -38,17 +38,9 @@ class obj():
 if not os.path.exists(xml_des):
     os.makedirs(xml_des)
 
-# content check
+
 pic_filelists = os.listdir(pic_dir)
-if pic_filelists == []:
-    print("No Picture input!")
-    sys.exit(1)
-
 txt_filelists = os.listdir(txt_dir)
-if txt_filelists == []:
-    print("No txt input!")
-    sys.exit(1)
-
 for file in txt_filelists:
     # get width and height
     try:

@@ -69,7 +69,7 @@ def get(dir):
 if not os.path.exists(txt_des):
     os.makedirs(txt_des)
 
-# xml2yolo convertion
+# xml2yolo conversion
 filelists = os.listdir(pic_dir)
 for n_0 in filelists:
     n_0 = n_0.split('.jpg')[0] + '.xml'

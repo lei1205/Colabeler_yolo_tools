@@ -7,7 +7,7 @@
   ```
   pip install opencv-python
   ```
-  Make sure all pictures are jpg, you can use [jpg_convertion.py](./jpg_convertion.py) if needed.
+  Make sure all pictures are jpg, you can use [jpg_conversion.py](./jpg_conversion.py) if needed.
 
 ## [colabeler2yolo.py](./colabeler2yolo.py)
 * picture folder, xml folder, yolo txt destination folder(optional)
@@ -23,7 +23,7 @@
   ```
 
 ## To change object type...
-* Edit index in both colabeler2yolo.py and yolo2colabeler.py
+* Edit index in both [colabeler2yolo.py](./colabeler2yolo.py) and [yolo2colabeler.py](./yolo2colabeler.py)
 
   ```python
   # colabeler2yolo.py

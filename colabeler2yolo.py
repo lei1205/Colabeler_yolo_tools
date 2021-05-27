@@ -1,8 +1,32 @@
-from tkinter.constants import N
 from xml.dom.minidom import parse
 import os
 import cv2
 import re
+import sys
+
+# Read arguments
+argument = sys.argv[1:]
+if len(argument) < 2 or len(argument) > 3:
+    print("Example: python colabeler2yolo.py ./pic ./outputs ./outputs_yolo")
+    sys.exit(1)
+elif len(argument) == 2:
+    if not argument[0].endswith('/'):
+        argument[0] += '/'
+    if not argument[1].endswith('/'):
+        argument[1] += '/'
+    pic_dir = argument[0]
+    xml_dir = argument[1]
+    txt_des = "./outputs_yolo/"
+elif len(argument) == 3:
+    if not argument[0].endswith('/'):
+        argument[0] += '/'
+    if not argument[1].endswith('/'):
+        argument[1] += '/'
+    if not argument[2].endswith('/'):
+        argument[2] += '/'
+    pic_dir = argument[0]
+    xml_dir = argument[1]
+    txt_des = argument[2]
 
 index = {'HeavyVehicle':0,'MidsizeVehicle':1,'CompactVehicle':2,'Car':3,'NoneVehicle':4,'Pedestrian':5,'LargeBus':6,'LightBus':7}
 
@@ -13,6 +37,7 @@ class bbox():
     dis_x = 0
     dis_y = 0
 
+# get bbox info from xml
 def get(dir):
     DOMTree=parse(dir)
     collection=DOMTree.documentElement
@@ -39,37 +64,36 @@ def get(dir):
 
         result.append(b)
     return result
-    
-dir = '../0517zyq/PV2001_ImageAnnotation/'
-dir_0 = dir + 'outputs/'
-result_dir = dir + 'outputs_yolo/'
-jpg_dir = dir + 'jpg/'
 
-if not os.path.exists(result_dir):
-    os.makedirs(result_dir)
+# convert bmp to jpg (Not used)
+def bmptojpg(dir):
+    if not os.path.exists(dir + 'jpg/'):
+        os.makedirs(dir + 'jpg/')
 
-if not os.path.exists(jpg_dir):
-    os.makedirs(jpg_dir)
+    filelists = os.listdir(dir)
+    for file in filelists:
+        img = cv2.imread(dir + file,-1)
+        cv2.imwrite(dir + 'jpg/' + file.split('.bmp')[0] + '.jpg',img)
+        print('已转换'+file+'为jpg') 
 
-filelists = os.listdir(dir)
-for file in filelists[:-3]:
-    img = cv2.imread(dir + file,-1)
-    cv2.imwrite(jpg_dir + file.split('.bmp')[0] + '.jpg',img)
-    print('已转换'+file+'为jpg')  
+# detect and create destination folder
+if not os.path.exists(txt_des):
+    os.makedirs(txt_des)
 
+# xml2yolo convertion
+filelists = os.listdir(pic_dir)
 for n_0 in filelists:
-    n_0 = n_0.split('.bmp')[0] + '.xml'
-    if os.path.exists(dir_0 + n_0):
+    n_0 = n_0.split('.jpg')[0] + '.xml'
+    if os.path.exists(xml_dir + n_0):
         res = ''
-        r = get(dir_0 + n_0)
-        tar_num = len(get(dir_0 + n_0))
+        r = get(xml_dir + n_0)
+        tar_num = len(get(xml_dir + n_0))
         print(n_0 + ', 目标数量：' + str(tar_num))
-
        
         for k in range(tar_num):
             t = re.sub('[\W_]+', '', r[k].type)
             res += str(index[t]) + ' ' + str(r[k].mid_x) + ' ' + str(r[k].mid_y) + ' ' + str(r[k].dis_x) + ' ' + str(r[k].dis_y) + '\n'
 
-        f = open(result_dir + n_0.split('.xml')[0] + '.txt', 'a')
+        f = open(txt_des + n_0.split('.xml')[0] + '.txt', 'a')
         f.write(res)
         f.close()
